@@ -1,6 +1,12 @@
 import 'package:flutter/material.dart';
+import 'package:provider/provider.dart';
 
+import '../core/navegacion.dart';
 import '../core/theme/app_colors.dart';
+import '../providers/catalogo_provider.dart';
+import '../providers/reserva_provider.dart';
+import '../services/connectivity_service.dart';
+import '../services/notification_service.dart';
 
 /// Pantalla de carga de la marca.
 ///
@@ -28,13 +34,37 @@ class _SplashScreenState extends State<SplashScreen>
   @override
   void initState() {
     super.initState();
-    _iniciar();
+    // Se inicia después del primer frame para no notificar cambios
+    // de estado mientras el árbol de widgets se está construyendo.
+    WidgetsBinding.instance.addPostFrameCallback((_) => _iniciar());
   }
 
+  /// Carga inicial mientras se muestra la animación: catálogo y reservas
+  /// guardadas. Se esperan en paralelo con Future.wait.
   Future<void> _iniciar() async {
-    await Future.delayed(const Duration(milliseconds: 1600));
+    final red = context.read<ConnectivityService>();
+    final notificaciones = context.read<NotificationService>();
+    final catalogo = context.read<CatalogoProvider>();
+    final reservas = context.read<ReservaProvider>();
+    // Primero sabemos si hay internet para decidir red o caché.
+    await red.iniciar();
+    await Future.wait([
+      notificaciones.iniciar(),
+      Future.delayed(const Duration(milliseconds: 1600)),
+      catalogo.cargar(),
+      reservas.cargar(),
+    ]);
     if (!mounted) return;
     Navigator.pushReplacementNamed(context, '/home');
+
+    // Permiso de notificaciones (Android 13+ / iOS) tras mostrar el catálogo.
+    await notificaciones.solicitarPermiso();
+
+    // Si la app se abrió desde una notificación, vamos a "Mis reservas".
+    final payload = await notificaciones.payloadDeArranque();
+    if (payload == NotificationService.payloadReservas) {
+      navigatorKey.currentState?.pushNamed('/reservas');
+    }
   }
 
   @override
