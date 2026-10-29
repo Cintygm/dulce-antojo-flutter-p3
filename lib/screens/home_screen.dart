@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 
+import '../core/theme/app_colors.dart';
 import '../models/postre.dart';
 import '../widgets/postre_card.dart';
 
@@ -27,9 +28,7 @@ class HomeScreen extends StatelessWidget {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: const Text('Dulce Antojo'),
-        backgroundColor: Colors.pink,
-        foregroundColor: Colors.white,
+        title: const Text('Mora & Miel'),
       ),
       body: Column(
         children: [
@@ -38,14 +37,14 @@ class HomeScreen extends StatelessWidget {
             margin: const EdgeInsets.all(12),
             padding: const EdgeInsets.all(12),
             decoration: BoxDecoration(
-              color: Colors.pink[50],
+              color: AppColors.mora.withValues(alpha: 0.08),
               borderRadius: BorderRadius.circular(10),
             ),
             child: const Row(
               children: [
-                Icon(Icons.cake, size: 36, color: Colors.pink),
+                Icon(Icons.cake, size: 36, color: AppColors.mora),
                 SizedBox(width: 10),
-                Text('Postres hechos en casa'),
+                Text('Pastelería artesanal de la casa'),
               ],
             ),
           ),

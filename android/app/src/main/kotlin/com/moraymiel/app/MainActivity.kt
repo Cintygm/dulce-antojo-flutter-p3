@@ -1,4 +1,4 @@
-package com.dulceantojo.dulce_antojo
+package com.moraymiel.app
 
 import io.flutter.embedding.android.FlutterActivity
 
