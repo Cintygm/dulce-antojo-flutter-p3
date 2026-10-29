@@ -39,6 +39,8 @@ dependencies:
   provider: ^6.1.5
   # Caché / persistencia local (catálogo y reservas)
   shared_preferences: ^2.5.3
+  # Servicio nativo de conectividad (stream de cambios de red)
+  connectivity_plus: ^7.0.0
 
 dev_dependencies:
   flutter_test:
