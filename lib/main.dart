@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 
+import 'core/navegacion.dart';
 import 'core/theme/app_theme.dart';
 import 'data/repositories/catalogo_repository.dart';
 import 'data/repositories/reserva_repository.dart';
@@ -13,6 +14,7 @@ import 'screens/reservas_screen.dart';
 import 'screens/splash_screen.dart';
 import 'services/connectivity_service.dart';
 import 'services/image_service.dart';
+import 'services/notification_service.dart';
 import 'services/permission_service.dart';
 import 'widgets/offline_banner.dart';
 
@@ -29,6 +31,7 @@ void main() {
         ),
         Provider(create: (_) => PermissionService()),
         Provider(create: (_) => ImageService()),
+        Provider(create: (_) => NotificationService()),
         // Estado para la UI (capa de providers).
         ChangeNotifierProvider(
           create: (ctx) => ConnectivityProvider(ctx.read<ConnectivityService>()),
@@ -43,6 +46,7 @@ void main() {
           create: (ctx) => ReservaProvider(
             ReservaRepository(),
             ctx.read<ConnectivityService>(),
+            ctx.read<NotificationService>(),
           ),
         ),
       ],
@@ -59,6 +63,7 @@ class MoraYMielApp extends StatelessWidget {
     return MaterialApp(
       title: 'Mora & Miel',
       debugShowCheckedModeBanner: false,
+      navigatorKey: navigatorKey,
       theme: AppTheme.light,
       // El banner de conectividad envuelve a todas las pantallas.
       builder: (context, child) => OfflineBanner(child: child!),

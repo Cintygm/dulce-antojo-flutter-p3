@@ -9,6 +9,8 @@
         android:name="android.permission.READ_EXTERNAL_STORAGE"
         android:maxSdkVersion="32" />
     <uses-feature android:name="android.hardware.camera" android:required="false" />
+    <!-- Notificaciones locales (Android 13+ requiere permiso en tiempo de ejecución) -->
+    <uses-permission android:name="android.permission.POST_NOTIFICATIONS" />
 
     <application
         android:label="Mora &amp; Miel"

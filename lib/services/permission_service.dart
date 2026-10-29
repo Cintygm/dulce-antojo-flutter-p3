@@ -3,8 +3,9 @@ import 'dart:io';
 import 'package:flutter/services.dart';
 import 'package:permission_handler/permission_handler.dart';
 
-/// Permisos que la app solicita en tiempo de ejecución.
-enum TipoPermiso { camara, galeria, notificaciones }
+/// Permisos de hardware que la app solicita en tiempo de ejecución.
+/// (Las notificaciones se piden con su propio plugin en NotificationService.)
+enum TipoPermiso { camara, galeria }
 
 /// Resultado simplificado para que la UI decida qué mostrar.
 enum ResultadoPermiso {
@@ -48,7 +49,6 @@ class PermissionService {
   Future<Permission> _permisoDe(TipoPermiso tipo) async => switch (tipo) {
     TipoPermiso.camara => Permission.camera,
     TipoPermiso.galeria => await _permisoGaleria(),
-    TipoPermiso.notificaciones => Permission.notification,
   };
 
   /// Consulta el estado y, si hace falta, muestra el diálogo del sistema.
