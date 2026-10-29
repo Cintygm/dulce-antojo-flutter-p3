@@ -133,7 +133,7 @@ Flujo: `feature/*` → `develop` (merge `--no-ff`) → `main` (release). Mensaje
 
 ## 7. Documentación
 
-El informe técnico de la actividad está en [`docs/`](docs/).
+El informe técnico de la actividad está en [`docs/Guaman_Cinthia_ActividadIntegradora2.pdf`](docs/Guaman_Cinthia_ActividadIntegradora2.pdf) (versión editable `.docx` en la misma carpeta).
 
 ## Créditos
 
