@@ -4,6 +4,7 @@ import 'package:provider/provider.dart';
 import '../core/theme/app_colors.dart';
 import '../data/models/postre.dart';
 import '../providers/reserva_provider.dart';
+import '../widgets/foto_referencia_picker.dart';
 
 /// Pantalla 2: detalle del postre y formulario de reserva.
 class DetailScreen extends StatefulWidget {
@@ -17,6 +18,7 @@ class _DetailScreenState extends State<DetailScreen> {
   final nombreCtrl = TextEditingController();
   int cantidad = 1;
   bool enviando = false;
+  String? fotoPath; // foto de referencia ya procesada
 
   @override
   void dispose() {
@@ -43,6 +45,7 @@ class _DetailScreenState extends State<DetailScreen> {
       postre: postre,
       cliente: nombre,
       cantidad: cantidad,
+      fotoPath: fotoPath,
     );
     if (!mounted) return;
     // Regresamos a la Pantalla 1 con un mensaje.
@@ -115,7 +118,8 @@ class _DetailScreenState extends State<DetailScreen> {
                     ),
                   ],
                 ),
-                // @foto-referencia
+                const Divider(height: 30),
+                FotoReferenciaPicker(onCambio: (ruta) => fotoPath = ruta),
                 const SizedBox(height: 16),
                 SizedBox(
                   width: double.infinity,

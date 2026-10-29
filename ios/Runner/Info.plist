@@ -2,6 +2,10 @@
 <!DOCTYPE plist PUBLIC "-//Apple//DTD PLIST 1.0//EN" "http://www.apple.com/DTDs/PropertyList-1.0.dtd">
 <plist version="1.0">
 <dict>
+	<key>NSCameraUsageDescription</key>
+	<string>Mora &amp; Miel usa la cámara para que adjuntes una foto de referencia del postre que deseas.</string>
+	<key>NSPhotoLibraryUsageDescription</key>
+	<string>Mora &amp; Miel necesita acceso a tus fotos para adjuntar una imagen de referencia a tu reserva.</string>
 	<key>CADisableMinimumFrameDurationOnPhone</key>
 	<true/>
 	<key>CFBundleDevelopmentRegion</key>

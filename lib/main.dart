@@ -12,6 +12,8 @@ import 'screens/home_screen.dart';
 import 'screens/reservas_screen.dart';
 import 'screens/splash_screen.dart';
 import 'services/connectivity_service.dart';
+import 'services/image_service.dart';
+import 'services/permission_service.dart';
 import 'widgets/offline_banner.dart';
 
 void main() {
@@ -25,6 +27,8 @@ void main() {
           create: (_) => ConnectivityService()..iniciar(),
           dispose: (_, s) => s.dispose(),
         ),
+        Provider(create: (_) => PermissionService()),
+        Provider(create: (_) => ImageService()),
         // Estado para la UI (capa de providers).
         ChangeNotifierProvider(
           create: (ctx) => ConnectivityProvider(ctx.read<ConnectivityService>()),
