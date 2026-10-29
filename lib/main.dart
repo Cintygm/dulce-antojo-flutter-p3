@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 
+import 'core/theme/app_theme.dart';
 import 'screens/detail_screen.dart';
 import 'screens/home_screen.dart';
 
@@ -15,7 +16,7 @@ class MoraYMielApp extends StatelessWidget {
     return MaterialApp(
       title: 'Mora & Miel',
       debugShowCheckedModeBanner: false,
-      theme: ThemeData(colorSchemeSeed: Colors.pink),
+      theme: AppTheme.light,
       // Rutas con nombre de la app
       initialRoute: '/',
       routes: {
