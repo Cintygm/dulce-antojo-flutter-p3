@@ -6,6 +6,7 @@ import '../data/models/postre.dart';
 import '../data/models/reserva.dart';
 import '../data/repositories/reserva_repository.dart';
 import '../services/connectivity_service.dart';
+import '../services/notification_service.dart';
 
 /// Gestiona las reservas: crear, listar, guardar y sincronizar.
 ///
@@ -16,10 +17,11 @@ import '../services/connectivity_service.dart';
 class ReservaProvider extends ChangeNotifier {
   final ReservaRepository _repo;
   final ConnectivityService _red;
+  final NotificationService _notificaciones;
   late final StreamSubscription<EstadoRed> _sub;
   bool _sincronizando = false;
 
-  ReservaProvider(this._repo, this._red) {
+  ReservaProvider(this._repo, this._red, this._notificaciones) {
     _sub = _red.cambios.listen((estado) {
       if (estado == EstadoRed.enLinea) sincronizarPendientes();
     });
@@ -59,6 +61,18 @@ class ReservaProvider extends ChangeNotifier {
     _reservas.add(reserva);
     await _repo.guardarTodas(_reservas);
     notifyListeners();
+
+    // Notificación local según el resultado.
+    if (online) {
+      await _notificaciones.reservaConfirmada(
+        postre: postre.nombre,
+        cantidad: cantidad,
+        cliente: cliente,
+        total: reserva.total,
+      );
+    } else {
+      await _notificaciones.reservaGuardadaOffline(postre: postre.nombre);
+    }
     return reserva;
   }
 
@@ -79,6 +93,7 @@ class ReservaProvider extends ChangeNotifier {
       if (enviadas > 0) {
         await _repo.guardarTodas(_reservas);
         notifyListeners();
+        await _notificaciones.reservasSincronizadas(enviadas);
       }
     } finally {
       _sincronizando = false;
