@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 
+import '../core/theme/app_colors.dart';
 import '../models/postre.dart';
 
 // Tarjeta que muestra un postre (se usa varias veces en la lista)
@@ -35,7 +36,7 @@ class PostreCard extends StatelessWidget {
                 ),
                 Row(
                   children: [
-                    const Icon(Icons.sell, size: 14, color: Colors.pink),
+                    const Icon(Icons.sell, size: 14, color: AppColors.miel),
                     const SizedBox(width: 4),
                     Text('\$${postre.precio.toStringAsFixed(2)}'),
                   ],

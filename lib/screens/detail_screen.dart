@@ -51,8 +51,6 @@ class _DetailScreenState extends State<DetailScreen> {
     return Scaffold(
       appBar: AppBar(
         title: Text(postre.nombre),
-        backgroundColor: Colors.pink,
-        foregroundColor: Colors.white,
       ),
       body: ListView(
         children: [
