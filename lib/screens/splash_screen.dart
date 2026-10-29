@@ -1,6 +1,9 @@
 import 'package:flutter/material.dart';
+import 'package:provider/provider.dart';
 
 import '../core/theme/app_colors.dart';
+import '../providers/catalogo_provider.dart';
+import '../providers/reserva_provider.dart';
 
 /// Pantalla de carga de la marca.
 ///
@@ -28,11 +31,21 @@ class _SplashScreenState extends State<SplashScreen>
   @override
   void initState() {
     super.initState();
-    _iniciar();
+    // Se inicia después del primer frame para no notificar cambios
+    // de estado mientras el árbol de widgets se está construyendo.
+    WidgetsBinding.instance.addPostFrameCallback((_) => _iniciar());
   }
 
+  /// Carga inicial mientras se muestra la animación: catálogo y reservas
+  /// guardadas. Se esperan en paralelo con Future.wait.
   Future<void> _iniciar() async {
-    await Future.delayed(const Duration(milliseconds: 1600));
+    final catalogo = context.read<CatalogoProvider>();
+    final reservas = context.read<ReservaProvider>();
+    await Future.wait([
+      Future.delayed(const Duration(milliseconds: 1600)),
+      catalogo.cargar(),
+      reservas.cargar(),
+    ]);
     if (!mounted) return;
     Navigator.pushReplacementNamed(context, '/home');
   }

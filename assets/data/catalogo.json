@@ -1,0 +1,30 @@
+[
+  {
+    "codigo": 1,
+    "nombre": "Tiramisú de mora",
+    "detalle": "Capas de bizcocho empapado en café, crema de mascarpone y coulis de mora silvestre.",
+    "precio": 3.75,
+    "foto": "assets/images/torta_chocolate.jpg"
+  },
+  {
+    "codigo": 2,
+    "nombre": "Cupcakes de miel",
+    "detalle": "Caja de 4 cupcakes de chocolate con frosting de vainilla y un hilo de miel de abeja.",
+    "precio": 5.25,
+    "foto": "assets/images/cupcakes.jpg"
+  },
+  {
+    "codigo": 3,
+    "nombre": "Cheesecake frutos rojos",
+    "detalle": "Pastel de queso horneado con salsa de moras y frambuesas sobre base de galleta.",
+    "precio": 4.50,
+    "foto": "assets/images/cheesecake.jpg"
+  },
+  {
+    "codigo": 4,
+    "nombre": "Tres leches con miel",
+    "detalle": "Bizcocho húmedo bañado en tres leches, cubierto con merengue y miel caramelizada.",
+    "precio": 3.25,
+    "foto": "assets/images/tres_leches.jpg"
+  }
+]
