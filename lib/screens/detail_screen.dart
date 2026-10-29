@@ -1,8 +1,11 @@
 import 'package:flutter/material.dart';
+import 'package:provider/provider.dart';
 
-import '../models/postre.dart';
+import '../core/theme/app_colors.dart';
+import '../data/models/postre.dart';
+import '../providers/reserva_provider.dart';
 
-// Pantalla 2: detalle del postre y formulario de reserva
+/// Pantalla 2: detalle del postre y formulario de reserva.
 class DetailScreen extends StatefulWidget {
   const DetailScreen({super.key});
 
@@ -13,48 +16,53 @@ class DetailScreen extends StatefulWidget {
 class _DetailScreenState extends State<DetailScreen> {
   final nombreCtrl = TextEditingController();
   int cantidad = 1;
+  bool enviando = false;
+
+  @override
+  void dispose() {
+    nombreCtrl.dispose();
+    super.dispose();
+  }
 
   void restar() {
-    if (cantidad > 1) {
-      setState(() {
-        cantidad--;
-      });
-    }
+    if (cantidad > 1) setState(() => cantidad--);
   }
 
-  void sumar() {
-    setState(() {
-      cantidad++;
-    });
-  }
+  void sumar() => setState(() => cantidad++);
 
-  void reservar(Postre postre) {
-    if (nombreCtrl.text.isEmpty) {
+  Future<void> reservar(Postre postre) async {
+    final nombre = nombreCtrl.text.trim();
+    if (nombre.isEmpty) {
       ScaffoldMessenger.of(
         context,
       ).showSnackBar(const SnackBar(content: Text('Escribe tu nombre')));
       return;
     }
-    // Regresamos a la Pantalla 1 con un mensaje
-    Navigator.pop(
-      context,
-      '${nombreCtrl.text} reservó $cantidad ${postre.nombre}',
+    setState(() => enviando = true);
+    await context.read<ReservaProvider>().crearReserva(
+      postre: postre,
+      cliente: nombre,
+      cantidad: cantidad,
     );
+    if (!mounted) return;
+    // Regresamos a la Pantalla 1 con un mensaje.
+    Navigator.pop(context, '$nombre reservó $cantidad ${postre.nombre}');
   }
 
   @override
   Widget build(BuildContext context) {
-    // Recibimos el postre que se envió desde la Pantalla 1
+    // Recibimos el postre que se envió desde la Pantalla 1.
     final postre = ModalRoute.of(context)!.settings.arguments as Postre;
-    double total = postre.precio * cantidad;
+    final total = postre.precio * cantidad;
 
     return Scaffold(
-      appBar: AppBar(
-        title: Text(postre.nombre),
-      ),
+      appBar: AppBar(title: Text(postre.nombre)),
       body: ListView(
         children: [
-          Image.asset(postre.foto, height: 220, fit: BoxFit.cover),
+          Hero(
+            tag: 'postre-${postre.codigo}',
+            child: Image.asset(postre.foto, height: 220, fit: BoxFit.cover),
+          ),
           Padding(
             padding: const EdgeInsets.all(16),
             child: Column(
@@ -62,10 +70,7 @@ class _DetailScreenState extends State<DetailScreen> {
               children: [
                 Text(
                   postre.nombre,
-                  style: const TextStyle(
-                    fontSize: 24,
-                    fontWeight: FontWeight.bold,
-                  ),
+                  style: Theme.of(context).textTheme.headlineSmall,
                 ),
                 Text(
                   'Código: ${postre.codigo}',
@@ -74,17 +79,17 @@ class _DetailScreenState extends State<DetailScreen> {
                 const SizedBox(height: 8),
                 Text(postre.detalle),
                 const Divider(height: 30),
-                const Text(
+                Text(
                   'Reservar postre',
-                  style: TextStyle(fontSize: 18, fontWeight: FontWeight.bold),
+                  style: Theme.of(context).textTheme.titleMedium,
                 ),
                 const SizedBox(height: 10),
                 TextField(
                   controller: nombreCtrl,
+                  textCapitalization: TextCapitalization.words,
                   decoration: const InputDecoration(
                     labelText: 'Tu nombre',
                     prefixIcon: Icon(Icons.person),
-                    border: OutlineInputBorder(),
                   ),
                 ),
                 const SizedBox(height: 10),
@@ -103,16 +108,29 @@ class _DetailScreenState extends State<DetailScreen> {
                     const Spacer(),
                     Text(
                       'Total: \$${total.toStringAsFixed(2)}',
-                      style: const TextStyle(fontWeight: FontWeight.bold),
+                      style: const TextStyle(
+                        fontWeight: FontWeight.bold,
+                        color: AppColors.mora,
+                      ),
                     ),
                   ],
                 ),
-                const SizedBox(height: 10),
+                // @foto-referencia
+                const SizedBox(height: 16),
                 SizedBox(
                   width: double.infinity,
                   child: ElevatedButton.icon(
-                    onPressed: () => reservar(postre),
-                    icon: const Icon(Icons.check),
+                    onPressed: enviando ? null : () => reservar(postre),
+                    icon: enviando
+                        ? const SizedBox(
+                            width: 18,
+                            height: 18,
+                            child: CircularProgressIndicator(
+                              strokeWidth: 2,
+                              color: Colors.white,
+                            ),
+                          )
+                        : const Icon(Icons.check),
                     label: const Text('Reservar'),
                   ),
                 ),
