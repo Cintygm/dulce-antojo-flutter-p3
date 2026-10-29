@@ -3,6 +3,7 @@ import 'package:flutter/material.dart';
 import 'core/theme/app_theme.dart';
 import 'screens/detail_screen.dart';
 import 'screens/home_screen.dart';
+import 'screens/splash_screen.dart';
 
 void main() {
   runApp(const MoraYMielApp());
@@ -20,7 +21,8 @@ class MoraYMielApp extends StatelessWidget {
       // Rutas con nombre de la app
       initialRoute: '/',
       routes: {
-        '/': (context) => const HomeScreen(),
+        '/': (context) => const SplashScreen(),
+        '/home': (context) => const HomeScreen(),
         '/detalle': (context) => const DetailScreen(),
       },
     );
