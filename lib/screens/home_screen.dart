@@ -35,6 +35,11 @@ class HomeScreen extends StatelessWidget {
         title: const Text('Mora & Miel'),
         actions: [
           IconButton(
+            tooltip: 'Recetario dulce',
+            icon: const Icon(Icons.menu_book),
+            onPressed: () => Navigator.pushNamed(context, '/recetas'),
+          ),
+          IconButton(
             tooltip: 'Mis reservas',
             icon: const Icon(Icons.receipt_long),
             onPressed: () => Navigator.pushNamed(context, '/reservas'),
